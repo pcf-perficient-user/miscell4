@@ -1,18 +1,36 @@
 dist: trusty
+sudo: false
+notifications:
+  email: false
+env:
+- RELEASE_TAG="release-$TRAVIS_BUILD_NUMBER"
+if: tag IS blank
+
 jobs:
   include:
   - stage: build and publish
     language: java
     jdk: oraclejdk8
+    install: skip
     script: ./gradlew clean build
+    before_deploy:
+    - git config --local user.name "Travis CI"
+    - git config --local user.email "travis@example.com"
+    - git tag -f $RELEASE_TAG
     deploy:
       provider: releases
       api_key: $GITHUB_OAUTH_TOKEN
       file: "build/libs/miscell4.jar"
+      skip_cleanup: true
   - stage: deploy to review
     language: java
     script:
-      - wget -P build/libs https://github.com/$GITHUB_USERNAME/micell4/releases/download/miscell4.jar
+    - echo "Downloading $RELEASE_TAG"
+    - wget -P build/libs https://github.com/$GITHUB_USERNAME/miscell4/releases/download/$RELEASE_TAG/miscell4.jar
+    before_deploy:
+    - echo "Deploying $RELEASE_TAG to review"
+    after_success:
+    - cf login -a $CF_API_URL -u $CF_USERNAME -p $CF_PASSWORD -o $CF_ORG -s development
     deploy:
       provider: cloudfoundry
       api: $CF_API_URL
