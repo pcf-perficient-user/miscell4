@@ -6,4 +6,4 @@ deploy:
   password: $CF_PASSWORD
   organization: $CF_ORG
   space: development
-  skip_ssl_validation: true
+  skip_ssl_validation: false
