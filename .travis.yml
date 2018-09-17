@@ -8,7 +8,7 @@ jobs:
       provider: releases
       api_key: $GITHUB_OAUTH_TOKEN
       file: "build/libs/miscell4.jar"
-  - stage: deploy to development
+  - stage: deploy to review
     language: java
     script:
       - wget -P build/libs https://github.com/$GITHUB_USERNAME/micell4/releases/download/miscell4.jar
