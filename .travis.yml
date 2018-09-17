@@ -1,10 +1,21 @@
-language: java
-script: ./gradlew clean build
-deploy:
-  provider: cloudfoundry
-  api: $CF_API_URL
-  username: $CF_USERNAME
-  password: $CF_PASSWORD
-  organization: $CF_ORG
-  space: development
-  skip_ssl_validation: false
+jobs:
+  include:
+  - stage: build and publish
+    language: java
+    script: ./gradlew clean build
+    deploy:
+      provider: releases
+      api_key: $GITHUB_OAUTH_TOKEN
+      file: "build/libs/miscell4.jar"
+  - stage: deploy to development
+    language: java
+    script:
+      - wget -P build/libs https://github.com/$GITHUB_USERNAME/micell4/releases/download/miscell4.jar
+    deploy:
+      provider: cloudfoundry
+      api: $CF_API_URL
+      username: $CF_USERNAME
+      password: $CF_PASSWORD
+      organization: $CF_ORG
+      space: development
+      skip_ssl_validation: false
