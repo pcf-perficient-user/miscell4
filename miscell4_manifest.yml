@@ -1,0 +1,13 @@
+applications:
+- name: miscell4
+  disk_quota: 1G
+  instances: 1
+  memory: 1G
+  routes:
+  - route: miscell4.cfapps.io
+  - route: miscell4-angry-chipmunk.cfapps.io
+  - route: www.testyourapp2.com
+  - route: miscell4.testyourapp2.com
+  services:
+  - miscell5-autoscaler
+  stack: cflinuxfs2
