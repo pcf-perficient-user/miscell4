@@ -1,4 +1,4 @@
-language: java
+dist: trusty
 jobs:
   include:
   - stage: build and publish
