@@ -3,6 +3,7 @@ jobs:
   include:
   - stage: build and publish
     language: java
+    jdk: oraclejdk8
     script: ./gradlew clean build
     deploy:
       provider: releases
